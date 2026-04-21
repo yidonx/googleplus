@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GooglePlus</title>
+  <link rel="icon" href="./favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #111827;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --panel: #ffffff;
+      --accent: #111827;
+      --soft: #f9fafb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: #fff;
+    }
+
+    main {
+      width: min(860px, calc(100% - 32px));
+      min-height: 100vh;
+      margin: 0 auto;
+      display: grid;
+      align-content: center;
+      gap: 30px;
+      padding: 48px 0;
+    }
+
+    .brand {
+      display: grid;
+      justify-items: center;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(38px, 7vw, 72px);
+      line-height: 1;
+      font-weight: 760;
+      letter-spacing: 0;
+    }
+
+    .g,
+    .o1,
+    .o2,
+    .l,
+    .ink {
+      color: var(--ink);
+    }
+
+    .tagline {
+      display: none;
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .search-panel {
+      position: relative;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: var(--panel);
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .input-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-height: 56px;
+      padding: 0 18px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: white;
+      transition: border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .input-wrap:focus-within {
+      border-color: var(--ink);
+      box-shadow: none;
+    }
+
+    .search-icon {
+      width: 22px;
+      height: 22px;
+      flex: 0 0 auto;
+      color: var(--muted);
+    }
+
+    input {
+      width: 100%;
+      border: 0;
+      outline: 0;
+      color: var(--ink);
+      font: inherit;
+      font-size: 17px;
+      background: transparent;
+    }
+
+    .date-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 180px));
+      gap: 10px;
+    }
+
+    .date-field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .date-field span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .date-field input {
+      min-height: 38px;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--ink);
+      font-size: 13px;
+      background: white;
+      transition: border-color 160ms ease;
+    }
+
+    .date-field input:focus {
+      border-color: var(--ink);
+    }
+
+    button {
+      min-height: 56px;
+      border: 0;
+      border-radius: 999px;
+      padding: 0 24px;
+      color: white;
+      background: var(--accent);
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 160ms ease, opacity 160ms ease;
+    }
+
+    button:hover {
+      opacity: 0.86;
+      transform: translateY(-1px);
+    }
+
+    .floating {
+      min-height: 190px;
+      margin-top: 22px;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      overflow: hidden;
+    }
+
+    .filter-group + .filter-group {
+      margin-top: 22px;
+    }
+
+    .floating-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 14px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .query-preview {
+      display: none;
+      color: var(--ink);
+      font-weight: 800;
+    }
+
+    .chips,
+    .sites {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip,
+    .site-chip {
+      appearance: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 0 11px 0 13px;
+      color: var(--ink);
+      background: white;
+      font-size: 13px;
+      font-weight: 540;
+      cursor: pointer;
+      animation: floatIn 260ms ease both;
+    }
+
+    .chip:hover,
+    .site-chip:hover {
+      border-color: var(--ink);
+      color: var(--ink);
+      transform: translateY(-2px);
+    }
+
+    .chip.active,
+    .site-chip.active {
+      border-color: var(--ink);
+      color: white;
+      background: var(--ink);
+    }
+
+    .quick-search {
+      display: inline-grid;
+      place-items: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      color: inherit;
+      opacity: 0.52;
+      font-size: 12px;
+    }
+
+    .chip:hover .quick-search,
+    .chip.active .quick-search,
+    .site-chip:hover .quick-search,
+    .site-chip.active .quick-search {
+      opacity: 1;
+    }
+
+    .hint {
+      display: none;
+      margin: 16px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    @keyframes floatIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.99);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @media (max-width: 720px) {
+      main {
+        width: min(100% - 20px, 1120px);
+        padding: 24px 0;
+      }
+
+      .brand {
+        display: block;
+      }
+
+      .tagline {
+        max-width: none;
+        text-align: left;
+      }
+
+      .search-panel {
+        padding: 0;
+      }
+
+      form {
+        grid-template-columns: 1fr;
+      }
+
+      .date-row {
+        grid-template-columns: 1fr;
+      }
+
+      button {
+        width: 100%;
+      }
+
+      .floating {
+        padding: 0;
+      }
+
+      .floating-head {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="brand" aria-label="GooglePlus">
+      <h1>
+        <span class="g">G</span><span class="o1">o</span><span class="o2">o</span><span class="g">g</span><span class="l">l</span><span class="o1">e</span><span class="ink">Plus</span>
+      </h1>
+    </section>
+
+    <section class="search-panel">
+      <form id="searchForm">
+        <label class="input-wrap" for="searchInput">
+          <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="m20 20-3.8-3.8"></path>
+          </svg>
+          <input id="searchInput" name="q" autocomplete="off" placeholder="输入词语..." autofocus>
+        </label>
+        <button type="submit">搜索</button>
+      </form>
+
+      <div class="floating" aria-live="polite">
+        <div class="filter-group">
+          <div class="floating-head">
+            <span>网站</span>
+            <span class="query-preview" id="sitePreview"></span>
+          </div>
+          <div class="sites" id="sites"></div>
+        </div>
+
+        <div class="filter-group">
+          <div class="floating-head">
+            <span>时间</span>
+            <span class="query-preview" id="datePreview"></span>
+          </div>
+          <div class="date-row">
+            <label class="date-field">
+              <span>搜索此日期之后</span>
+              <input id="afterInput" type="date" aria-label="搜索此日期之后">
+            </label>
+            <label class="date-field">
+              <span>搜索此日期之前</span>
+              <input id="beforeInput" type="date" aria-label="搜索此日期之前">
+            </label>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <div class="floating-head">
+            <span>关键词</span>
+            <span class="query-preview" id="queryPreview"></span>
+          </div>
+          <div class="chips" id="chips"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const keywords = [
+      "awesome", "guide", "tour", "trends", "insights", "ranking", "top", "tools",
+      "directory", "explore", "category", "track", "index", "free", "observatory",
+      "dashboard", "statistics", "search", "favorites", "collection",
+      "discover", "overview", "summary", "ecosystem", "architecture", "framework",
+      "map", "mindmap", "landscape", "glossary", "database"
+    ];
+
+    const siteOptions = [
+      { label: "reddit", value: "site:www.reddit.com" },
+      { label: "x", value: "site:www.x.com" },
+      { label: "youtube", value: "site:www.youtube.com" },
+      { label: "threads", value: "www.threads.com" }
+    ];
+
+    const input = document.querySelector("#searchInput");
+    const form = document.querySelector("#searchForm");
+    const chips = document.querySelector("#chips");
+    const sites = document.querySelector("#sites");
+    const preview = document.querySelector("#queryPreview");
+    const sitePreview = document.querySelector("#sitePreview");
+    const datePreview = document.querySelector("#datePreview");
+    const afterInput = document.querySelector("#afterInput");
+    const beforeInput = document.querySelector("#beforeInput");
+    const selectedKeywords = new Set();
+    const selectedSites = new Set();
+
+    function normalizeQuery() {
+      return input.value.trim();
+    }
+
+    function quoteTerm(term) {
+      const clean = String(term).trim().replaceAll('"', "");
+      return clean ? `"${clean}"` : "";
+    }
+
+    function getDateFilters() {
+      return [
+        afterInput.value ? `after:${afterInput.value}` : "",
+        beforeInput.value ? `before:${beforeInput.value}` : ""
+      ].filter(Boolean);
+    }
+
+    function updateDatePreview() {
+      const filters = getDateFilters();
+      datePreview.textContent = filters.length ? filters.join(" ") : "";
+    }
+
+    function buildSearchQuery(query, selected, siteFilters = [], dateFilters = []) {
+      const quotedKeywords = selected.map(quoteTerm).filter(Boolean);
+      const filters = siteFilters.filter(Boolean);
+      const dates = dateFilters.filter(Boolean);
+
+      if (!query) {
+        return [...quotedKeywords, ...filters, ...dates].join(" ");
+      }
+
+      return [quoteTerm(query), ...quotedKeywords, ...filters, ...dates].filter(Boolean).join(" ");
+    }
+
+    function openSearch(parts) {
+      const query = parts.filter(Boolean).join(" ");
+      if (!query) {
+        input.focus();
+        return;
+      }
+
+      window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, "_blank", "noopener");
+    }
+
+    function getSelectedSites() {
+      return Array.from(selectedSites);
+    }
+
+    function updateSitePreview() {
+      sitePreview.textContent = selectedSites.size ? getSelectedSites().join(" ") : "";
+    }
+
+    function renderSites() {
+      updateSitePreview();
+      sites.innerHTML = "";
+
+      siteOptions.forEach((site, index) => {
+        const chip = document.createElement("button");
+        chip.type = "button";
+        chip.className = selectedSites.has(site.value) ? "site-chip active" : "site-chip";
+        chip.setAttribute("aria-pressed", selectedSites.has(site.value));
+        chip.style.animationDelay = `${Math.min(index * 18, 160)}ms`;
+
+        const label = document.createElement("span");
+        label.textContent = site.label;
+
+        const quickSearch = document.createElement("span");
+        quickSearch.className = "quick-search";
+        quickSearch.setAttribute("aria-hidden", "true");
+        quickSearch.textContent = "↗";
+
+        chip.append(label, quickSearch);
+        chip.addEventListener("click", (event) => {
+          if (event.target.closest(".quick-search")) {
+            openSearch([buildSearchQuery(normalizeQuery(), [], [site.value], getDateFilters())]);
+            return;
+          }
+
+          if (selectedSites.has(site.value)) {
+            selectedSites.delete(site.value);
+          } else {
+            selectedSites.add(site.value);
+          }
+
+          renderSites();
+        });
+
+        sites.appendChild(chip);
+      });
+    }
+
+    function renderChips() {
+      const query = normalizeQuery();
+      preview.textContent = query ? quoteTerm(query) : "";
+      chips.innerHTML = "";
+
+      keywords.forEach((keyword, index) => {
+        const chip = document.createElement("button");
+        chip.type = "button";
+        chip.className = selectedKeywords.has(keyword) ? "chip active" : "chip";
+        chip.setAttribute("aria-pressed", selectedKeywords.has(keyword));
+        chip.style.animationDelay = `${Math.min(index * 18, 520)}ms`;
+
+        const label = document.createElement("span");
+        label.textContent = query ? `${quoteTerm(query)} ${quoteTerm(keyword)}` : quoteTerm(keyword);
+
+        const quickSearch = document.createElement("span");
+        quickSearch.className = "quick-search";
+        quickSearch.setAttribute("aria-hidden", "true");
+        quickSearch.textContent = "↗";
+
+        chip.append(label, quickSearch);
+        chip.addEventListener("click", (event) => {
+          if (event.target.closest(".quick-search")) {
+            openSearch([buildSearchQuery(normalizeQuery(), [keyword], getSelectedSites(), getDateFilters())]);
+            return;
+          }
+
+          if (selectedKeywords.has(keyword)) {
+            selectedKeywords.delete(keyword);
+          } else {
+            selectedKeywords.add(keyword);
+          }
+
+          renderChips();
+        });
+        chips.appendChild(chip);
+      });
+    }
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const selected = Array.from(selectedKeywords);
+      const query = normalizeQuery();
+      openSearch([buildSearchQuery(query, selected, getSelectedSites(), getDateFilters())]);
+    });
+
+    input.addEventListener("input", renderChips);
+    afterInput.addEventListener("input", updateDatePreview);
+    beforeInput.addEventListener("input", updateDatePreview);
+    updateDatePreview();
+    renderSites();
+    renderChips();
+  </script>
+</body>
+</html>
