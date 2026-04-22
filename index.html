@@ -13,14 +13,12 @@
       --ink: #111827;
       --muted: #6b7280;
       --line: #e5e7eb;
-      --panel: #ffffff;
+      --line-strong: #cbd5e1;
       --accent: #111827;
-      --soft: #f9fafb;
+      --soft: #f8fafc;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       min-height: 100vh;
@@ -31,13 +29,13 @@
     }
 
     main {
-      width: min(860px, calc(100% - 32px));
+      width: min(880px, calc(100% - 32px));
       min-height: 100vh;
       margin: 0 auto;
       display: grid;
       align-content: center;
-      gap: 30px;
-      padding: 48px 0;
+      gap: 22px;
+      padding: 40px 0;
     }
 
     .brand {
@@ -48,7 +46,7 @@
 
     h1 {
       margin: 0;
-      font-size: clamp(38px, 7vw, 72px);
+      font-size: clamp(36px, 6vw, 60px);
       line-height: 1;
       font-weight: 760;
       letter-spacing: 0;
@@ -62,49 +60,33 @@
       color: var(--ink);
     }
 
-    .tagline {
-      display: none;
-      margin: 0;
-      color: var(--muted);
-      font-size: 15px;
-      line-height: 1.6;
-    }
-
-    .search-panel {
-      position: relative;
-      padding: 0;
-      border: 0;
-      border-radius: 0;
-      background: var(--panel);
-    }
-
     form {
       display: grid;
-      grid-template-columns: 1fr auto;
+      grid-template-columns: minmax(0, 686px) 84px;
       gap: 10px;
       align-items: center;
+      justify-content: center;
     }
 
     .input-wrap {
       display: flex;
       align-items: center;
-      gap: 12px;
-      min-height: 56px;
-      padding: 0 18px;
+      gap: 10px;
+      min-height: 50px;
+      padding: 0 17px;
       border: 1px solid var(--line);
       border-radius: 999px;
       background: white;
-      transition: border-color 160ms ease, box-shadow 160ms ease;
+      transition: border-color 160ms ease;
     }
 
     .input-wrap:focus-within {
       border-color: var(--ink);
-      box-shadow: none;
     }
 
     .search-icon {
-      width: 22px;
-      height: 22px;
+      width: 20px;
+      height: 20px;
       flex: 0 0 auto;
       color: var(--muted);
     }
@@ -115,93 +97,106 @@
       outline: 0;
       color: var(--ink);
       font: inherit;
-      font-size: 17px;
+      font-size: 16px;
       background: transparent;
     }
 
-    .date-row {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 180px));
-      gap: 10px;
+    button {
+      min-height: 50px;
+      border: 0;
+      border-radius: 999px;
+      padding: 0 18px;
+      color: white;
+      background: var(--accent);
+      font: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 160ms ease;
     }
 
-    .date-field {
-      display: grid;
-      gap: 6px;
+    button:hover { opacity: 0.86; }
+
+    .floating {
+      margin-top: 24px;
     }
 
-    .date-field span {
+    .control-panel {
+      display: grid;
+      grid-template-columns: 36px minmax(0, 1fr);
+      gap: 14px 6px;
+      align-items: center;
+      width: min(780px, 100%);
+      margin: 0 auto;
+      padding: 0;
+      border: 0;
+      background: transparent;
+    }
+
+    .control-label {
       color: var(--muted);
       font-size: 12px;
+      font-weight: 520;
+      text-align: left;
+      white-space: nowrap;
     }
 
-    .date-field input {
-      min-height: 38px;
-      padding: 0 12px;
+    .control-content {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      flex-wrap: nowrap;
+    }
+
+    .sites,
+    .chips {
+      display: flex;
+      gap: 8px;
+    }
+
+    .sites { flex-wrap: nowrap; }
+    .chips { flex-wrap: wrap; }
+
+    .field {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-width: 0;
+    }
+
+    .field span {
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .field input,
+    .field select {
+      height: 32px;
+      padding: 0 11px;
       border: 1px solid var(--line);
       border-radius: 999px;
       color: var(--ink);
       font-size: 13px;
-      background: white;
-      transition: border-color 160ms ease;
+      background: transparent;
+      outline: 0;
     }
 
-    .date-field input:focus {
+    .field input:focus,
+    .field select:focus {
       border-color: var(--ink);
     }
 
-    button {
-      min-height: 56px;
-      border: 0;
-      border-radius: 999px;
-      padding: 0 24px;
-      color: white;
-      background: var(--accent);
-      font: inherit;
-      font-weight: 700;
-      cursor: pointer;
-      transition: transform 160ms ease, opacity 160ms ease;
+    .date-input,
+    .small-input,
+    #localeSelect {
+      width: 118px;
     }
 
-    button:hover {
-      opacity: 0.86;
-      transform: translateY(-1px);
-    }
-
-    .floating {
-      min-height: 190px;
-      margin-top: 22px;
-      padding: 0;
-      border: 0;
-      border-radius: 0;
-      background: transparent;
-      overflow: hidden;
-    }
-
-    .filter-group + .filter-group {
-      margin-top: 22px;
-    }
-
-    .floating-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 14px;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .query-preview {
+    .query-preview,
+    .hint {
       display: none;
-      color: var(--ink);
-      font-weight: 800;
-    }
-
-    .chips,
-    .sites {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
     }
 
     .chip,
@@ -209,24 +204,26 @@
       appearance: none;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      min-height: 34px;
+      gap: 6px;
+      min-height: 30px;
       border: 1px solid var(--line);
       border-radius: 999px;
-      padding: 0 11px 0 13px;
+      padding: 0 10px 0 11px;
       color: var(--ink);
-      background: white;
+      background: transparent;
       font-size: 13px;
-      font-weight: 540;
+      font-weight: 520;
       cursor: pointer;
       animation: floatIn 260ms ease both;
+    }
+
+    .site-chip {
+      padding: 0 10px;
     }
 
     .chip:hover,
     .site-chip:hover {
       border-color: var(--ink);
-      color: var(--ink);
-      transform: translateY(-2px);
     }
 
     .chip.active,
@@ -239,12 +236,12 @@
     .quick-search {
       display: inline-grid;
       place-items: center;
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
       border-radius: 50%;
       color: inherit;
       opacity: 0.52;
-      font-size: 12px;
+      font-size: 11px;
     }
 
     .chip:hover .quick-search,
@@ -252,14 +249,6 @@
     .site-chip:hover .quick-search,
     .site-chip.active .quick-search {
       opacity: 1;
-    }
-
-    .hint {
-      display: none;
-      margin: 16px 0 0;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.6;
     }
 
     @keyframes floatIn {
@@ -275,42 +264,41 @@
 
     @media (max-width: 720px) {
       main {
-        width: min(100% - 20px, 1120px);
+        width: min(100% - 20px, 880px);
         padding: 24px 0;
       }
 
-      .brand {
-        display: block;
+      form { grid-template-columns: 1fr; }
+
+      .control-panel {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        padding: 14px;
       }
 
-      .tagline {
-        max-width: none;
+      .control-label {
         text-align: left;
+        margin-top: 6px;
       }
 
-      .search-panel {
-        padding: 0;
+      .control-content,
+      .sites {
+        flex-wrap: wrap;
       }
 
-      form {
-        grid-template-columns: 1fr;
+      .field {
+        flex: 1 1 140px;
       }
 
-      .date-row {
-        grid-template-columns: 1fr;
-      }
-
-      button {
+      .field input,
+      .field select,
+      .date-input,
+      .small-input,
+      #localeSelect {
         width: 100%;
       }
 
-      .floating {
-        padding: 0;
-      }
-
-      .floating-head {
-        display: block;
-      }
+      button { width: 100%; }
     }
   </style>
 </head>
@@ -335,38 +323,54 @@
       </form>
 
       <div class="floating" aria-live="polite">
-        <div class="filter-group">
-          <div class="floating-head">
-            <span>网站</span>
-            <span class="query-preview" id="sitePreview"></span>
-          </div>
-          <div class="sites" id="sites"></div>
-        </div>
+        <div class="control-panel">
+          <div class="control-label">网站</div>
+          <div class="control-content sites" id="sites"></div>
 
-        <div class="filter-group">
-          <div class="floating-head">
-            <span>时间</span>
-            <span class="query-preview" id="datePreview"></span>
-          </div>
-          <div class="date-row">
-            <label class="date-field">
-              <span>搜索此日期之后</span>
-              <input id="afterInput" type="date" aria-label="搜索此日期之后">
-            </label>
-            <label class="date-field">
-              <span>搜索此日期之前</span>
-              <input id="beforeInput" type="date" aria-label="搜索此日期之前">
+          <div class="control-label">之后</div>
+          <div class="control-content">
+            <label class="field">
+              <input class="date-input" id="afterInput" type="date" aria-label="搜索此日期之后">
             </label>
           </div>
+
+          <div class="control-label">之前</div>
+          <div class="control-content">
+            <label class="field">
+              <input class="date-input" id="beforeInput" type="date" aria-label="搜索此日期之前">
+            </label>
+          </div>
+
+          <div class="control-label">地区</div>
+          <div class="control-content">
+            <label class="field">
+              <select id="localeSelect" aria-label="搜索地区和界面语言">
+                <option value="">默认</option>
+                <option value="us|en">美国 / English</option>
+                <option value="jp|ja">日本 / 日本語</option>
+                <option value="kr|ko">韩国 / 한국어</option>
+                <option value="gb|en">英国 / English</option>
+                <option value="cn|zh-CN">中国 / 简体中文</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="control-label">文件</div>
+          <div class="control-content">
+            <label class="field">
+              <input class="small-input" id="filetypeInput" type="text" placeholder="pdf" autocomplete="off">
+            </label>
+          </div>
+
+          <div class="control-label">热词</div>
+          <div class="control-content chips" id="chips"></div>
         </div>
 
-        <div class="filter-group">
-          <div class="floating-head">
-            <span>关键词</span>
-            <span class="query-preview" id="queryPreview"></span>
-          </div>
-          <div class="chips" id="chips"></div>
-        </div>
+        <span class="query-preview" id="sitePreview"></span>
+        <span class="query-preview" id="datePreview"></span>
+        <span class="query-preview" id="advancedPreview"></span>
+        <span class="query-preview" id="localePreview"></span>
+        <span class="query-preview" id="queryPreview"></span>
       </div>
     </section>
   </main>
@@ -381,10 +385,10 @@
     ];
 
     const siteOptions = [
+      { label: "x", value: "site:x.com" },
       { label: "reddit", value: "site:www.reddit.com" },
-      { label: "x", value: "site:www.x.com" },
-      { label: "youtube", value: "site:www.youtube.com" },
-      { label: "threads", value: "www.threads.com" }
+      { label: "thread", value: "www.threads.com" },
+      { label: "youtube", value: "site:www.youtube.com" }
     ];
 
     const input = document.querySelector("#searchInput");
@@ -394,8 +398,12 @@
     const preview = document.querySelector("#queryPreview");
     const sitePreview = document.querySelector("#sitePreview");
     const datePreview = document.querySelector("#datePreview");
+    const advancedPreview = document.querySelector("#advancedPreview");
+    const localePreview = document.querySelector("#localePreview");
     const afterInput = document.querySelector("#afterInput");
     const beforeInput = document.querySelector("#beforeInput");
+    const filetypeInput = document.querySelector("#filetypeInput");
+    const localeSelect = document.querySelector("#localeSelect");
     const selectedKeywords = new Set();
     const selectedSites = new Set();
 
@@ -406,6 +414,10 @@
     function quoteTerm(term) {
       const clean = String(term).trim().replaceAll('"', "");
       return clean ? `"${clean}"` : "";
+    }
+
+    function cleanOperatorTerm(term) {
+      return String(term).trim().replaceAll('"', "").replace(/\s+/g, "");
     }
 
     function getDateFilters() {
@@ -420,26 +432,62 @@
       datePreview.textContent = filters.length ? filters.join(" ") : "";
     }
 
-    function buildSearchQuery(query, selected, siteFilters = [], dateFilters = []) {
+    function getAdvancedFilters() {
+      const filetype = cleanOperatorTerm(filetypeInput.value).replace(/^\./, "");
+
+      return [
+        filetype ? `filetype:${filetype}` : ""
+      ].filter(Boolean);
+    }
+
+    function updateAdvancedPreview() {
+      const filters = getAdvancedFilters();
+      advancedPreview.textContent = filters.length ? filters.join(" ") : "";
+    }
+
+    function getLocaleParams() {
+      const [gl = "", hl = ""] = localeSelect.value.split("|");
+
+      return {
+        gl,
+        hl
+      };
+    }
+
+    function updateLocalePreview() {
+      const { gl, hl } = getLocaleParams();
+      localePreview.textContent = [gl ? `gl=${gl}` : "", hl ? `hl=${hl}` : ""].filter(Boolean).join(" ");
+    }
+
+    function buildSearchQuery(query, selected, siteFilters = [], dateFilters = [], advancedFilters = []) {
       const quotedKeywords = selected.map(quoteTerm).filter(Boolean);
       const filters = siteFilters.filter(Boolean);
       const dates = dateFilters.filter(Boolean);
+      const advanced = advancedFilters.filter(Boolean);
 
       if (!query) {
-        return [...quotedKeywords, ...filters, ...dates].join(" ");
+        return [...quotedKeywords, ...filters, ...dates, ...advanced].join(" ");
       }
 
-      return [quoteTerm(query), ...quotedKeywords, ...filters, ...dates].filter(Boolean).join(" ");
+      return [quoteTerm(query), ...quotedKeywords, ...filters, ...dates, ...advanced].filter(Boolean).join(" ");
     }
 
-    function openSearch(parts) {
+    function openSearch(parts, localeParams = getLocaleParams()) {
       const query = parts.filter(Boolean).join(" ");
       if (!query) {
         input.focus();
         return;
       }
 
-      window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, "_blank", "noopener");
+      const params = new URLSearchParams({ q: query });
+      if (localeParams.gl) {
+        params.set("gl", localeParams.gl);
+      }
+      if (localeParams.hl) {
+        params.set("hl", localeParams.hl);
+      }
+
+      window.open(`https://www.google.com/search?${params.toString()}`, "_blank", "noopener");
     }
 
     function getSelectedSites() {
@@ -472,7 +520,7 @@
         chip.append(label, quickSearch);
         chip.addEventListener("click", (event) => {
           if (event.target.closest(".quick-search")) {
-            openSearch([buildSearchQuery(normalizeQuery(), [], [site.value], getDateFilters())]);
+            openSearch([buildSearchQuery(normalizeQuery(), [], [site.value], getDateFilters(), getAdvancedFilters())]);
             return;
           }
 
@@ -512,7 +560,7 @@
         chip.append(label, quickSearch);
         chip.addEventListener("click", (event) => {
           if (event.target.closest(".quick-search")) {
-            openSearch([buildSearchQuery(normalizeQuery(), [keyword], getSelectedSites(), getDateFilters())]);
+            openSearch([buildSearchQuery(normalizeQuery(), [keyword], getSelectedSites(), getDateFilters(), getAdvancedFilters())]);
             return;
           }
 
@@ -532,13 +580,17 @@
       event.preventDefault();
       const selected = Array.from(selectedKeywords);
       const query = normalizeQuery();
-      openSearch([buildSearchQuery(query, selected, getSelectedSites(), getDateFilters())]);
+      openSearch([buildSearchQuery(query, selected, getSelectedSites(), getDateFilters(), getAdvancedFilters())]);
     });
 
     input.addEventListener("input", renderChips);
     afterInput.addEventListener("input", updateDatePreview);
     beforeInput.addEventListener("input", updateDatePreview);
+    filetypeInput.addEventListener("input", updateAdvancedPreview);
+    localeSelect.addEventListener("change", updateLocalePreview);
     updateDatePreview();
+    updateAdvancedPreview();
+    updateLocalePreview();
     renderSites();
     renderChips();
   </script>
