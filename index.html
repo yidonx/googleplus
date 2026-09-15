@@ -1,610 +1,646 @@
 <!doctype html>
 <html lang="zh-CN">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>GooglePlus</title>
-  <link rel="icon" href="./favicon.ico" type="image/x-icon">
-  <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
-  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
-  <script async defer src="https://tianji.668erp.com/tracker.js" data-website-id="cmtjidpsy0005wrusr31bxdnm"></script>
-  <style>
-    :root {
-      color-scheme: light;
-      --ink: #111827;
-      --muted: #6b7280;
-      --line: #e5e7eb;
-      --line-strong: #cbd5e1;
-      --accent: #111827;
-      --soft: #f8fafc;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      min-height: 100vh;
-      margin: 0;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: var(--ink);
-      background: #fff;
-    }
-
-    main {
-      width: min(880px, calc(100% - 32px));
-      min-height: 100vh;
-      margin: 0 auto;
-      display: grid;
-      align-content: center;
-      gap: 22px;
-      padding: 40px 0;
-    }
-
-    .brand {
-      display: grid;
-      justify-items: center;
-      text-align: center;
-    }
-
-    h1 {
-      margin: 0;
-      font-size: clamp(36px, 6vw, 60px);
-      line-height: 1;
-      font-weight: 760;
-      letter-spacing: 0;
-    }
-
-    .g,
-    .o1,
-    .o2,
-    .l,
-    .ink {
-      color: var(--ink);
-    }
-
-    form {
-      display: grid;
-      grid-template-columns: minmax(0, 686px) 84px;
-      gap: 10px;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .input-wrap {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      min-height: 50px;
-      padding: 0 17px;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      background: white;
-      transition: border-color 160ms ease;
-    }
-
-    .input-wrap:focus-within {
-      border-color: var(--ink);
-    }
-
-    .search-icon {
-      width: 20px;
-      height: 20px;
-      flex: 0 0 auto;
-      color: var(--muted);
-    }
-
-    input {
-      width: 100%;
-      border: 0;
-      outline: 0;
-      color: var(--ink);
-      font: inherit;
-      font-size: 16px;
-      background: transparent;
-    }
-
-    button {
-      min-height: 50px;
-      border: 0;
-      border-radius: 999px;
-      padding: 0 18px;
-      color: white;
-      background: var(--accent);
-      font: inherit;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: opacity 160ms ease;
-    }
-
-    button:hover { opacity: 0.86; }
-
-    .floating {
-      margin-top: 24px;
-    }
-
-    .control-panel {
-      display: grid;
-      grid-template-columns: 36px minmax(0, 1fr);
-      gap: 14px 6px;
-      align-items: center;
-      width: min(780px, 100%);
-      margin: 0 auto;
-      padding: 0;
-      border: 0;
-      background: transparent;
-    }
-
-    .control-label {
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 520;
-      text-align: left;
-      white-space: nowrap;
-    }
-
-    .control-content {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      min-width: 0;
-      flex-wrap: nowrap;
-    }
-
-    .sites,
-    .chips {
-      display: flex;
-      gap: 8px;
-    }
-
-    .sites { flex-wrap: nowrap; }
-    .chips { flex-wrap: wrap; }
-
-    .field {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      min-width: 0;
-    }
-
-    .field span {
-      color: var(--muted);
-      font-size: 12px;
-      white-space: nowrap;
-    }
-
-    .field input,
-    .field select {
-      height: 32px;
-      padding: 0 11px;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      color: var(--ink);
-      font-size: 13px;
-      background: transparent;
-      outline: 0;
-    }
-
-    .field input:focus,
-    .field select:focus {
-      border-color: var(--ink);
-    }
-
-    .date-input,
-    .small-input,
-    #localeSelect {
-      width: 118px;
-    }
-
-    .query-preview,
-    .hint {
-      display: none;
-    }
-
-    .chip,
-    .site-chip {
-      appearance: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      min-height: 30px;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      padding: 0 10px 0 11px;
-      color: var(--ink);
-      background: transparent;
-      font-size: 13px;
-      font-weight: 520;
-      cursor: pointer;
-      animation: floatIn 260ms ease both;
-    }
-
-    .site-chip {
-      padding: 0 10px;
-    }
-
-    .chip:hover,
-    .site-chip:hover {
-      border-color: var(--ink);
-    }
-
-    .chip.active,
-    .site-chip.active {
-      border-color: var(--ink);
-      color: white;
-      background: var(--ink);
-    }
-
-    .quick-search {
-      display: inline-grid;
-      place-items: center;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      color: inherit;
-      opacity: 0.52;
-      font-size: 11px;
-    }
-
-    .chip:hover .quick-search,
-    .chip.active .quick-search,
-    .site-chip:hover .quick-search,
-    .site-chip.active .quick-search {
-      opacity: 1;
-    }
-
-    @keyframes floatIn {
-      from {
-        opacity: 0;
-        transform: translateY(8px) scale(0.99);
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GooglePlus</title>
+    <link rel="icon" href="./favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <script async defer src="https://tianji.668erp.com/tracker.js" data-website-id="cmtjidpsy0005wrusr31bxdnm"></script>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #111827;
+        --muted: #6b7280;
+        --line: #e5e7eb;
+        --line-strong: #cbd5e1;
+        --accent: #111827;
+        --soft: #f8fafc;
       }
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
 
-    @media (max-width: 720px) {
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        font-family:
+          Inter,
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        color: var(--ink);
+        background: #fff;
+      }
+
       main {
-        width: min(100% - 20px, 880px);
-        padding: 24px 0;
+        width: min(880px, calc(100% - 32px));
+        min-height: 100vh;
+        margin: 0 auto;
+        display: grid;
+        align-content: center;
+        gap: 22px;
+        padding: 40px 0;
       }
 
-      form { grid-template-columns: 1fr; }
+      .brand {
+        display: grid;
+        justify-items: center;
+        text-align: center;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(36px, 6vw, 60px);
+        line-height: 1;
+        font-weight: 760;
+        letter-spacing: 0;
+      }
+
+      .g,
+      .o1,
+      .o2,
+      .l,
+      .ink {
+        color: var(--ink);
+      }
+
+      form {
+        display: grid;
+        grid-template-columns: minmax(0, 686px) 84px;
+        gap: 10px;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .input-wrap {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-height: 50px;
+        padding: 0 17px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: white;
+        transition: border-color 160ms ease;
+      }
+
+      .input-wrap:focus-within {
+        border-color: var(--ink);
+      }
+
+      .search-icon {
+        width: 20px;
+        height: 20px;
+        flex: 0 0 auto;
+        color: var(--muted);
+      }
+
+      input {
+        width: 100%;
+        border: 0;
+        outline: 0;
+        color: var(--ink);
+        font: inherit;
+        font-size: 16px;
+        background: transparent;
+      }
+
+      button {
+        min-height: 50px;
+        border: 0;
+        border-radius: 999px;
+        padding: 0 18px;
+        color: white;
+        background: var(--accent);
+        font: inherit;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: opacity 160ms ease;
+      }
+
+      button:hover {
+        opacity: 0.86;
+      }
+
+      .floating {
+        margin-top: 24px;
+      }
 
       .control-panel {
-        grid-template-columns: 1fr;
-        gap: 8px;
-        padding: 14px;
+        display: grid;
+        grid-template-columns: 36px minmax(0, 1fr);
+        gap: 14px 6px;
+        align-items: center;
+        width: min(780px, 100%);
+        margin: 0 auto;
+        padding: 0;
+        border: 0;
+        background: transparent;
       }
 
       .control-label {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 520;
         text-align: left;
-        margin-top: 6px;
+        white-space: nowrap;
       }
 
-      .control-content,
+      .control-content {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+        flex-wrap: nowrap;
+      }
+
       .sites {
-        flex-wrap: wrap;
+        display: flex;
+        gap: 8px;
+      }
+
+      .sites {
+        flex-wrap: nowrap;
       }
 
       .field {
-        flex: 1 1 140px;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        min-width: 0;
+      }
+
+      .field span {
+        color: var(--muted);
+        font-size: 12px;
+        white-space: nowrap;
       }
 
       .field input,
-      .field select,
+      .field select {
+        height: 32px;
+        padding: 0 11px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        color: var(--ink);
+        font-size: 13px;
+        background: transparent;
+        outline: 0;
+      }
+
+      .field input:focus,
+      .field select:focus {
+        border-color: var(--ink);
+      }
+
       .date-input,
       .small-input,
-      #localeSelect {
-        width: 100%;
+      #localeSelect,
+      #filetypeSelect,
+      #keywordSelect {
+        width: 118px;
       }
 
-      button { width: 100%; }
-    }
-  </style>
-</head>
-<body>
-  <main>
-    <section class="brand" aria-label="GooglePlus">
-      <h1>
-        <span class="g">G</span><span class="o1">o</span><span class="o2">o</span><span class="g">g</span><span class="l">l</span><span class="o1">e</span><span class="ink">Plus</span>
-      </h1>
-    </section>
+      #keywordSelect {
+        height: 32px;
+        padding: 0 11px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        color: var(--ink);
+        font-size: 13px;
+        background: transparent;
+        outline: 0;
+      }
 
-    <section class="search-panel">
-      <form id="searchForm">
-        <label class="input-wrap" for="searchInput">
-          <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="11" cy="11" r="7"></circle>
-            <path d="m20 20-3.8-3.8"></path>
-          </svg>
-          <input id="searchInput" name="q" autocomplete="off" placeholder="输入词语..." autofocus>
-        </label>
-        <button type="submit">搜索</button>
-      </form>
+      #keywordSelect:focus {
+        border-color: var(--ink);
+      }
 
-      <div class="floating" aria-live="polite">
-        <div class="control-panel">
-          <div class="control-label">网站</div>
-          <div class="control-content sites" id="sites"></div>
+      .query-preview,
+      .hint {
+        display: none;
+      }
 
-          <div class="control-label">之后</div>
-          <div class="control-content">
-            <label class="field">
-              <input class="date-input" id="afterInput" type="date" aria-label="搜索此日期之后">
-            </label>
+      .chip,
+      .site-chip {
+        appearance: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        min-height: 30px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 0 10px 0 11px;
+        color: var(--ink);
+        background: transparent;
+        font-size: 13px;
+        font-weight: 520;
+        cursor: pointer;
+        animation: floatIn 260ms ease both;
+      }
+
+      .site-chip {
+        padding: 0 10px;
+      }
+
+      .chip:hover,
+      .site-chip:hover {
+        border-color: var(--ink);
+      }
+
+      .chip.active,
+      .site-chip.active {
+        border-color: var(--ink);
+        color: white;
+        background: var(--ink);
+      }
+
+      .quick-search {
+        display: inline-grid;
+        place-items: center;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        color: inherit;
+        opacity: 0.52;
+        font-size: 11px;
+      }
+
+      .chip:hover .quick-search,
+      .chip.active .quick-search,
+      .site-chip:hover .quick-search,
+      .site-chip.active .quick-search {
+        opacity: 1;
+      }
+
+      @keyframes floatIn {
+        from {
+          opacity: 0;
+          transform: translateY(8px) scale(0.99);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      @media (max-width: 720px) {
+        main {
+          width: min(100% - 20px, 880px);
+          padding: 24px 0;
+        }
+
+        form {
+          grid-template-columns: 1fr;
+        }
+
+        .control-panel {
+          grid-template-columns: 1fr;
+          gap: 8px;
+          padding: 14px;
+        }
+
+        .control-label {
+          text-align: left;
+          margin-top: 6px;
+        }
+
+        .control-content,
+        .sites {
+          flex-wrap: wrap;
+        }
+
+        .field {
+          flex: 1 1 140px;
+        }
+
+        .field input,
+        .field select,
+        .date-input,
+        .small-input,
+        #localeSelect {
+          width: 100%;
+        }
+
+        button {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="brand" aria-label="GooglePlus">
+        <h1><span class="g">G</span><span class="o1">o</span><span class="o2">o</span><span class="g">g</span><span class="l">l</span><span class="o1">e</span><span class="ink">Plus</span></h1>
+      </section>
+
+      <section class="search-panel">
+        <form id="searchForm">
+          <label class="input-wrap" for="searchInput">
+            <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="7"></circle>
+              <path d="m20 20-3.8-3.8"></path>
+            </svg>
+            <input id="searchInput" name="q" autocomplete="off" placeholder="输入词语..." autofocus />
+          </label>
+          <button type="submit">搜索</button>
+        </form>
+
+        <div class="floating" aria-live="polite">
+          <div class="control-panel">
+            <div class="control-label">网站</div>
+            <div class="control-content sites" id="sites"></div>
+
+            <div class="control-label">之后</div>
+            <div class="control-content">
+              <label class="field">
+                <input class="date-input" id="afterInput" type="date" aria-label="搜索此日期之后" />
+              </label>
+            </div>
+
+            <div class="control-label">之前</div>
+            <div class="control-content">
+              <label class="field">
+                <input class="date-input" id="beforeInput" type="date" aria-label="搜索此日期之前" />
+              </label>
+            </div>
+
+            <div class="control-label">地区</div>
+            <div class="control-content">
+              <label class="field">
+                <select id="localeSelect" aria-label="搜索地区和界面语言">
+                  <option value="">默认</option>
+                  <option value="us|en">美国 / English</option>
+                  <option value="jp|ja">日本 / 日本語</option>
+                  <option value="kr|ko">韩国 / 한국어</option>
+                  <option value="gb|en">英国 / English</option>
+                  <option value="cn|zh-CN">中国 / 简体中文</option>
+                  <option value="tw|zh-TW">台湾 / 繁體中文</option>
+                  <option value="hk|zh-TW">香港 / 繁體中文</option>
+                  <option value="sg|en">新加坡 / English</option>
+                  <option value="au|en">澳大利亚 / English</option>
+                  <option value="de|de">德国 / Deutsch</option>
+                  <option value="fr|fr">法国 / Français</option>
+                  <option value="in|en">印度 / English</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="control-label">文件</div>
+            <div class="control-content">
+              <label class="field">
+                <select id="filetypeSelect" aria-label="选择文件类型">
+                  <option value="">不限类型</option>
+                  <option value="pdf">PDF</option>
+                  <option value="doc">Word 文档</option>
+                  <option value="xls">Excel 表格</option>
+                  <option value="ppt">PowerPoint</option>
+                  <option value="txt">文本文件</option>
+                  <option value="csv">CSV</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="control-label">热词</div>
+            <div class="control-content">
+              <select id="keywordSelect" aria-label="选择热词"></select>
+            </div>
           </div>
 
-          <div class="control-label">之前</div>
-          <div class="control-content">
-            <label class="field">
-              <input class="date-input" id="beforeInput" type="date" aria-label="搜索此日期之前">
-            </label>
-          </div>
-
-          <div class="control-label">地区</div>
-          <div class="control-content">
-            <label class="field">
-              <select id="localeSelect" aria-label="搜索地区和界面语言">
-                <option value="">默认</option>
-                <option value="us|en">美国 / English</option>
-                <option value="jp|ja">日本 / 日本語</option>
-                <option value="kr|ko">韩国 / 한국어</option>
-                <option value="gb|en">英国 / English</option>
-                <option value="cn|zh-CN">中国 / 简体中文</option>
-                <option value="tw|zh-TW">台湾 / 繁體中文</option>
-                <option value="hk|zh-TW">香港 / 繁體中文</option>
-                <option value="sg|en">新加坡 / English</option>
-                <option value="au|en">澳大利亚 / English</option>
-                <option value="de|de">德国 / Deutsch</option>
-                <option value="fr|fr">法国 / Français</option>
-                <option value="in|en">印度 / English</option>
-              </select>
-            </label>
-          </div>
-
-          <div class="control-label">文件</div>
-          <div class="control-content">
-            <label class="field">
-              <input class="small-input" id="filetypeInput" type="text" placeholder="pdf" autocomplete="off">
-            </label>
-          </div>
-
-          <div class="control-label">热词</div>
-          <div class="control-content chips" id="chips"></div>
+          <span class="query-preview" id="sitePreview"></span>
+          <span class="query-preview" id="datePreview"></span>
+          <span class="query-preview" id="advancedPreview"></span>
+          <span class="query-preview" id="localePreview"></span>
+          <span class="query-preview" id="queryPreview"></span>
         </div>
+      </section>
+    </main>
 
-        <span class="query-preview" id="sitePreview"></span>
-        <span class="query-preview" id="datePreview"></span>
-        <span class="query-preview" id="advancedPreview"></span>
-        <span class="query-preview" id="localePreview"></span>
-        <span class="query-preview" id="queryPreview"></span>
-      </div>
-    </section>
-  </main>
+    <script>
+      const keywords = [
+        "news",
+        "database",
+        "ranking",
+        "top",
+        "index",
+        "awesome",
+        "guide",
+        "tour",
+        "trends",
+        "insights",
+        "tools",
+        "directory",
+        "explore",
+        "category",
+        "track",
+        "free",
+        "observatory",
+        "dashboard",
+        "statistics",
+        "search",
+        "favorites",
+        "collection",
+        "discover",
+        "overview",
+        "summary",
+        "ecosystem",
+        "architecture",
+        "framework",
+        "map",
+        "mindmap",
+        "landscape",
+        "glossary",
+      ];
 
-  <script>
-    const keywords = [
-      "awesome", "guide", "tour", "trends", "insights", "ranking", "top", "tools",
-      "directory", "explore", "category", "track", "index", "free", "observatory",
-      "dashboard", "statistics", "search", "favorites", "collection",
-      "discover", "overview", "summary", "ecosystem", "architecture", "framework",
-      "map", "mindmap", "landscape", "glossary", "database"
-    ];
+      const siteOptions = [
+        { label: "x", value: "site:x.com" },
+        { label: "reddit", value: "site:www.reddit.com" },
+        { label: "thread", value: "site:www.threads.com" },
+        { label: "youtube", value: "site:www.youtube.com" },
+        { label: "linux.do", value: "site:linux.do" },
+        { label: "v2ex", value: "site:v2ex.com" },
+        { label: "nodeseek", value: "site:nodeseek.com" },
+      ];
 
-    const siteOptions = [
-      { label: "x", value: "site:x.com" },
-      { label: "reddit", value: "site:www.reddit.com" },
-      { label: "thread", value: "www.threads.com" },
-      { label: "youtube", value: "site:www.youtube.com" },
-      { label: "linux.do", value: "site:linux.do" },
-      { label: "v2ex", value: "site:v2ex.com" },
-      { label: "nodeseek", value: "site:nodeseek.com" }
-    ];
+      const input = document.querySelector("#searchInput");
+      const form = document.querySelector("#searchForm");
+      const keywordSelect = document.querySelector("#keywordSelect");
+      const sites = document.querySelector("#sites");
+      const preview = document.querySelector("#queryPreview");
+      const sitePreview = document.querySelector("#sitePreview");
+      const datePreview = document.querySelector("#datePreview");
+      const advancedPreview = document.querySelector("#advancedPreview");
+      const localePreview = document.querySelector("#localePreview");
+      const afterInput = document.querySelector("#afterInput");
+      const beforeInput = document.querySelector("#beforeInput");
+      const filetypeSelect = document.querySelector("#filetypeSelect");
+      const localeSelect = document.querySelector("#localeSelect");
+      const selectedKeywords = new Set();
+      const selectedSites = new Set();
 
-    const input = document.querySelector("#searchInput");
-    const form = document.querySelector("#searchForm");
-    const chips = document.querySelector("#chips");
-    const sites = document.querySelector("#sites");
-    const preview = document.querySelector("#queryPreview");
-    const sitePreview = document.querySelector("#sitePreview");
-    const datePreview = document.querySelector("#datePreview");
-    const advancedPreview = document.querySelector("#advancedPreview");
-    const localePreview = document.querySelector("#localePreview");
-    const afterInput = document.querySelector("#afterInput");
-    const beforeInput = document.querySelector("#beforeInput");
-    const filetypeInput = document.querySelector("#filetypeInput");
-    const localeSelect = document.querySelector("#localeSelect");
-    const selectedKeywords = new Set();
-    const selectedSites = new Set();
-
-    function normalizeQuery() {
-      return input.value.trim();
-    }
-
-    function quoteTerm(term) {
-      const clean = String(term).trim().replaceAll('"', "");
-      return clean ? `"${clean}"` : "";
-    }
-
-    function cleanOperatorTerm(term) {
-      return String(term).trim().replaceAll('"', "").replace(/\s+/g, "");
-    }
-
-    function getDateFilters() {
-      return [
-        afterInput.value ? `after:${afterInput.value}` : "",
-        beforeInput.value ? `before:${beforeInput.value}` : ""
-      ].filter(Boolean);
-    }
-
-    function updateDatePreview() {
-      const filters = getDateFilters();
-      datePreview.textContent = filters.length ? filters.join(" ") : "";
-    }
-
-    function getAdvancedFilters() {
-      const filetype = cleanOperatorTerm(filetypeInput.value).replace(/^\./, "");
-
-      return [
-        filetype ? `filetype:${filetype}` : ""
-      ].filter(Boolean);
-    }
-
-    function updateAdvancedPreview() {
-      const filters = getAdvancedFilters();
-      advancedPreview.textContent = filters.length ? filters.join(" ") : "";
-    }
-
-    function getLocaleParams() {
-      const [gl = "", hl = ""] = localeSelect.value.split("|");
-
-      return {
-        gl,
-        hl
-      };
-    }
-
-    function updateLocalePreview() {
-      const { gl, hl } = getLocaleParams();
-      localePreview.textContent = [gl ? `gl=${gl}` : "", hl ? `hl=${hl}` : ""].filter(Boolean).join(" ");
-    }
-
-    function buildSearchQuery(query, selected, siteFilters = [], dateFilters = [], advancedFilters = []) {
-      const quotedKeywords = selected.map(quoteTerm).filter(Boolean);
-      const filters = siteFilters.filter(Boolean);
-      const dates = dateFilters.filter(Boolean);
-      const advanced = advancedFilters.filter(Boolean);
-
-      if (!query) {
-        return [...quotedKeywords, ...filters, ...dates, ...advanced].join(" ");
+      function normalizeQuery() {
+        return input.value.trim();
       }
 
-      return [quoteTerm(query), ...quotedKeywords, ...filters, ...dates, ...advanced].filter(Boolean).join(" ");
-    }
-
-    function openSearch(parts, localeParams = getLocaleParams()) {
-      const query = parts.filter(Boolean).join(" ");
-      if (!query) {
-        input.focus();
-        return;
+      function quoteTerm(term) {
+        const clean = String(term).trim().replaceAll('"', "");
+        return clean ? `"${clean}"` : "";
       }
 
-      const params = new URLSearchParams({ q: query });
-      if (localeParams.gl) {
-        params.set("gl", localeParams.gl);
-      }
-      if (localeParams.hl) {
-        params.set("hl", localeParams.hl);
+      function cleanOperatorTerm(term) {
+        return String(term).trim().replaceAll('"', "").replace(/\s+/g, "");
       }
 
-      window.open(`https://www.google.com/search?${params.toString()}`, "_blank", "noopener");
-    }
+      function getDateFilters() {
+        return [afterInput.value ? `after:${afterInput.value}` : "", beforeInput.value ? `before:${beforeInput.value}` : ""].filter(Boolean);
+      }
 
-    function getSelectedSites() {
-      return Array.from(selectedSites);
-    }
+      function updateDatePreview() {
+        const filters = getDateFilters();
+        datePreview.textContent = filters.length ? filters.join(" ") : "";
+      }
 
-    function updateSitePreview() {
-      sitePreview.textContent = selectedSites.size ? getSelectedSites().join(" ") : "";
-    }
+      function getAdvancedFilters() {
+        const filetype = cleanOperatorTerm(filetypeSelect.value).replace(/^\./, "");
 
-    function renderSites() {
-      updateSitePreview();
-      sites.innerHTML = "";
+        return [filetype ? `filetype:${filetype}` : ""].filter(Boolean);
+      }
 
-      siteOptions.forEach((site, index) => {
-        const chip = document.createElement("button");
-        chip.type = "button";
-        chip.className = selectedSites.has(site.value) ? "site-chip active" : "site-chip";
-        chip.setAttribute("aria-pressed", selectedSites.has(site.value));
-        chip.style.animationDelay = `${Math.min(index * 18, 160)}ms`;
+      function updateAdvancedPreview() {
+        const filters = getAdvancedFilters();
+        advancedPreview.textContent = filters.length ? filters.join(" ") : "";
+      }
 
-        const label = document.createElement("span");
-        label.textContent = site.label;
+      function getLocaleParams() {
+        const [gl = "", hl = ""] = localeSelect.value.split("|");
 
-        const quickSearch = document.createElement("span");
-        quickSearch.className = "quick-search";
-        quickSearch.setAttribute("aria-hidden", "true");
-        quickSearch.textContent = "↗";
+        return {
+          gl,
+          hl,
+        };
+      }
 
-        chip.append(label, quickSearch);
-        chip.addEventListener("click", (event) => {
-          if (event.target.closest(".quick-search")) {
-            openSearch([buildSearchQuery(normalizeQuery(), [], [site.value], getDateFilters(), getAdvancedFilters())]);
-            return;
-          }
+      function updateLocalePreview() {
+        const { gl, hl } = getLocaleParams();
+        localePreview.textContent = [gl ? `gl=${gl}` : "", hl ? `hl=${hl}` : ""].filter(Boolean).join(" ");
+      }
 
-          if (selectedSites.has(site.value)) {
-            selectedSites.delete(site.value);
-          } else {
-            selectedSites.clear();
-            selectedSites.add(site.value);
-          }
+      function buildSearchQuery(query, selected, siteFilters = [], dateFilters = [], advancedFilters = []) {
+        const quotedKeywords = selected.map(quoteTerm).filter(Boolean);
+        const filters = siteFilters.filter(Boolean);
+        const dates = dateFilters.filter(Boolean);
+        const advanced = advancedFilters.filter(Boolean);
 
-          renderSites();
+        if (!query) {
+          return [...quotedKeywords, ...filters, ...dates, ...advanced].join(" ");
+        }
+
+        return [quoteTerm(query), ...quotedKeywords, ...filters, ...dates, ...advanced].filter(Boolean).join(" ");
+      }
+
+      function openSearch(parts, localeParams = getLocaleParams()) {
+        const query = parts.filter(Boolean).join(" ");
+        if (!query) {
+          input.focus();
+          return;
+        }
+
+        const params = new URLSearchParams({ q: query });
+        if (localeParams.gl) {
+          params.set("gl", localeParams.gl);
+        }
+        if (localeParams.hl) {
+          params.set("hl", localeParams.hl);
+        }
+
+        window.open(`https://www.google.com/search?${params.toString()}`, "_blank", "noopener");
+      }
+
+      function getSelectedSites() {
+        return Array.from(selectedSites);
+      }
+
+      function updateSitePreview() {
+        sitePreview.textContent = selectedSites.size ? getSelectedSites().join(" ") : "";
+      }
+
+      function renderSites() {
+        updateSitePreview();
+        sites.innerHTML = "";
+
+        siteOptions.forEach((site, index) => {
+          const chip = document.createElement("button");
+          chip.type = "button";
+          chip.className = selectedSites.has(site.value) ? "site-chip active" : "site-chip";
+          chip.setAttribute("aria-pressed", selectedSites.has(site.value));
+          chip.style.animationDelay = `${Math.min(index * 18, 160)}ms`;
+
+          const label = document.createElement("span");
+          label.textContent = site.label;
+
+          const quickSearch = document.createElement("span");
+          quickSearch.className = "quick-search";
+          quickSearch.setAttribute("aria-hidden", "true");
+          quickSearch.textContent = "↗";
+
+          chip.append(label, quickSearch);
+          chip.addEventListener("click", (event) => {
+            if (event.target.closest(".quick-search")) {
+              openSearch([buildSearchQuery(normalizeQuery(), [], [site.value], getDateFilters(), getAdvancedFilters())]);
+              return;
+            }
+
+            if (selectedSites.has(site.value)) {
+              selectedSites.delete(site.value);
+            } else {
+              selectedSites.clear();
+              selectedSites.add(site.value);
+            }
+
+            renderSites();
+          });
+
+          sites.appendChild(chip);
         });
+      }
 
-        sites.appendChild(chip);
-      });
-    }
-
-    function renderChips() {
-      const query = normalizeQuery();
-      preview.textContent = query ? quoteTerm(query) : "";
-      chips.innerHTML = "";
-
-      keywords.forEach((keyword, index) => {
-        const chip = document.createElement("button");
-        chip.type = "button";
-        chip.className = selectedKeywords.has(keyword) ? "chip active" : "chip";
-        chip.setAttribute("aria-pressed", selectedKeywords.has(keyword));
-        chip.style.animationDelay = `${Math.min(index * 18, 520)}ms`;
-
-        const label = document.createElement("span");
-        label.textContent = query ? `${quoteTerm(query)} ${quoteTerm(keyword)}` : quoteTerm(keyword);
-
-        const quickSearch = document.createElement("span");
-        quickSearch.className = "quick-search";
-        quickSearch.setAttribute("aria-hidden", "true");
-        quickSearch.textContent = "↗";
-
-        chip.append(label, quickSearch);
-        chip.addEventListener("click", (event) => {
-          if (event.target.closest(".quick-search")) {
-            openSearch([buildSearchQuery(normalizeQuery(), [keyword], getSelectedSites(), getDateFilters(), getAdvancedFilters())]);
-            return;
-          }
-
-          if (selectedKeywords.has(keyword)) {
-            selectedKeywords.delete(keyword);
-          } else {
-            selectedKeywords.add(keyword);
-          }
-
-          renderChips();
+      function renderKeywordOptions() {
+        keywordSelect.replaceChildren(new Option("选择热词", ""));
+        keywords.forEach((keyword) => {
+          keywordSelect.add(new Option(keyword, keyword, false, selectedKeywords.has(keyword)));
         });
-        chips.appendChild(chip);
+      }
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const selected = Array.from(selectedKeywords);
+        const query = normalizeQuery();
+        openSearch([buildSearchQuery(query, selected, getSelectedSites(), getDateFilters(), getAdvancedFilters())]);
       });
-    }
 
-    form.addEventListener("submit", (event) => {
-      event.preventDefault();
-      const selected = Array.from(selectedKeywords);
-      const query = normalizeQuery();
-      openSearch([buildSearchQuery(query, selected, getSelectedSites(), getDateFilters(), getAdvancedFilters())]);
-    });
-
-    input.addEventListener("input", renderChips);
-    afterInput.addEventListener("input", updateDatePreview);
-    beforeInput.addEventListener("input", updateDatePreview);
-    filetypeInput.addEventListener("input", updateAdvancedPreview);
-    localeSelect.addEventListener("change", updateLocalePreview);
-    updateDatePreview();
-    updateAdvancedPreview();
-    updateLocalePreview();
-    renderSites();
-    renderChips();
-  </script>
-</body>
+      input.addEventListener("input", () => {
+        preview.textContent = normalizeQuery() ? quoteTerm(normalizeQuery()) : "";
+      });
+      afterInput.addEventListener("input", updateDatePreview);
+      beforeInput.addEventListener("input", updateDatePreview);
+      filetypeSelect.addEventListener("change", updateAdvancedPreview);
+      localeSelect.addEventListener("change", updateLocalePreview);
+      keywordSelect.addEventListener("change", () => {
+        selectedKeywords.clear();
+        if (keywordSelect.value) selectedKeywords.add(keywordSelect.value);
+      });
+      updateDatePreview();
+      updateAdvancedPreview();
+      updateLocalePreview();
+      renderSites();
+      renderKeywordOptions();
+    </script>
+  </body>
 </html>
